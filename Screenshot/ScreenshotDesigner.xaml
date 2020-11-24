@@ -1,0 +1,103 @@
+﻿<sap:ActivityDesigner x:Class="Screenshot.ScreenshotDesigner"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+             xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+             xmlns:sapc="clr-namespace:System.Activities.Presentation.Converters;assembly=System.Activities.Presentation"
+             xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"                       
+             xmlns:local="clr-namespace:Screenshot">
+             
+    <sap:ActivityDesigner.Resources>
+        <ResourceDictionary>
+            <sapc:ArgumentToExpressionConverter x:Key="ArgumentToExpressionConverter" />
+            <local:ImageFromBase64Converter x:Key="ImageFromBase64Converter"/>
+        </ResourceDictionary>
+    </sap:ActivityDesigner.Resources>
+    <Grid Width="300">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+					Width="*" />
+            <ColumnDefinition
+					Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <ContentControl
+				Margin="5,0"
+				Grid.Column="0"
+				VerticalAlignment="Top"
+				HorizontalAlignment="Stretch" >
+            <ScrollViewer
+					Name="ImageViewer"					
+					Height="70"
+					HorizontalScrollBarVisibility="Disabled"
+					VerticalScrollBarVisibility="Disabled"
+					HorizontalAlignment="Center"
+                    MouseDoubleClick="ShowImage"
+					Width="{Binding ActualWidth, ElementName=ImageCtrl, Mode=OneWay}">
+                <Border
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Margin="5,0">
+                    <Border
+							BorderThickness="1"
+							BorderBrush="#FFA9A9A9"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center">
+                        <Image
+			                   Stretch="Uniform"
+			                   StretchDirection="DownOnly"
+			                   Visibility="Visible"
+		                       DataContext="{Binding Path=ModelItem.TargetImageBase64, Converter={StaticResource ImageFromBase64Converter}, Mode=TwoWay}"
+			                   Source="{Binding}" />
+                    </Border>
+                </Border>
+            </ScrollViewer>
+        </ContentControl>
+
+        <Button
+                Width="25"
+                Height="25"
+                Content="≡"
+				Name="OptionsMenuButton"
+				VerticalAlignment="Top"
+				HorizontalAlignment="Right"		
+                Click="OpenOptions_Click"
+                Background="White"
+				Grid.Column="1">           
+            <FrameworkElement.ContextMenu>
+                <ContextMenu>
+                    <UIElement.CommandBindings>
+                        <CommandBinding
+								Command="local:ImageCommands.Grab"
+                                Executed="GrabImage_Executed"
+								 />
+                        <CommandBinding
+								Command="local:ImageCommands.Load"
+                                Executed="LoadImage_Executed"
+								 />
+                        <CommandBinding
+								Command="local:ImageCommands.Save"			
+                                Executed="SaveImage_Executed"
+								 />
+                    </UIElement.CommandBindings>
+                    <MenuItem
+							Header="从屏幕上捕捉"                       
+							Command="local:ImageCommands.Grab">
+                    </MenuItem>
+                    <MenuItem
+							Header="加载图像"
+							Command="local:ImageCommands.Load">
+                    </MenuItem>
+                    <MenuItem
+							Header="保存图像"
+							Command="local:ImageCommands.Save">
+                    </MenuItem>
+                </ContextMenu>
+            </FrameworkElement.ContextMenu>
+        </Button>
+        <!--<TextBlock Grid.Row="1" HorizontalAlignment="Center" Margin="5">
+            <Hyperlink Click="ScreenshotClick">点击屏幕</Hyperlink>
+        </TextBlock>-->
+    </Grid>
+</sap:ActivityDesigner>
+

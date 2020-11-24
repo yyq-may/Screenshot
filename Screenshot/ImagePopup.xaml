@@ -1,0 +1,45 @@
+﻿<Window x:Class="Screenshot.ImagePopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Screenshot"            
+	         Title="ImagePopupTitle"
+	         ShowInTaskbar="False"
+	         WindowStyle="None"
+	         ResizeMode="NoResize"
+	         WindowStartupLocation="CenterScreen">
+    <FrameworkElement.Resources>
+        <ResourceDictionary>
+            <local:ImageFromBase64Converter
+				x:Key="ImageFromBase64Converter" />
+        </ResourceDictionary>
+    </FrameworkElement.Resources>
+    <Border
+		Name="MainBorder"
+		BorderBrush="#FFA9A9A9"
+		BorderThickness="2">
+        <Grid>
+            <Image
+				Name="informativeImage"
+				Stretch="None"
+				Visibility="Visible"
+				DataContext="{Binding Path=InformativeScreenshotBase64, ElementName=ImagePopupWnd, Converter={StaticResource ImageFromBase64Converter}, Mode=TwoWay}"
+				Source="{Binding}" />
+            <Rectangle
+				Name="NodePosition"
+				Stroke="#FFFF0000"
+				StrokeThickness="2"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Visibility="Collapsed" />
+            <Rectangle
+				Name="ClippingRegionRectangle"
+				Stroke="#FF008000"
+				StrokeThickness="2"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Visibility="Collapsed" />
+        </Grid>
+    </Border>
+</Window>
